@@ -1,0 +1,57 @@
+<form>
+  <fieldset>
+    <legend class="doc">
+
+      <div *ngIf="webConnection">
+          Connected to {{model.url}}
+      </div>
+      <div *ngIf="!webConnection">
+          Disconnected
+      </div>
+  
+    </legend>
+
+    <div class="row responsive-label"><div class="col-sm-12 col-md-3"><label for="sf1-select" class="doc">Url</label></div>
+      <div class="col-sm-12 col-md">
+
+        <select id="sf1-select" style="width:85%;" class="doc" required [(ngModel)]="model.url" name="url">
+          <option class="doc" *ngFor="let url of urls" [value]="url">{{url}}</option>
+        </select>
+
+        <div>
+          <button [disabled]="!model.url || webConnection" (click)="connect()">Connect</button>
+          <button *ngIf="webConnection" (click)="disconnect()">Disconnect</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="webConnection">
+
+      <div class="row responsive-label">
+        <div class="col-sm-12 col-md-3">
+          <label for="sf1-textarea" class="doc">Input</label>
+        </div>
+        <div class="col-sm-12 col-md">
+          <textarea class="doc" style="width:85%;" placeholder="Input" [(ngModel)]="model.input" name="input"></textarea>
+          <div>
+            <button (click)="send()">Send</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    
+    <div class="row responsive-label">
+      <div class="col-sm-12 col-md-3">
+        <label for="sf1-textarea" class="doc">Output</label>
+      </div>
+      <div class="col-sm-12 col-md">
+          <pre *ngFor="let output of model.outputs">{{output}}</pre>
+      </div>
+    </div>
+
+  </fieldset>
+
+</form>
+
+
