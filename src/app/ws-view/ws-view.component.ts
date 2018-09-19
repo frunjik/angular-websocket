@@ -13,9 +13,9 @@ export class WsViewComponent implements OnInit {
     "wss://localhost:8888"
   ];
 
+  connection = null;
   subscription = null;
-  webConnection = null;
-  webSocketService: WebSocketService = null;
+  service: WebSocketService = null;
 
   model = {
     url: '',
@@ -26,36 +26,41 @@ export class WsViewComponent implements OnInit {
   constructor(
     webSocketService: WebSocketService
   ) { 
-    this.webSocketService = webSocketService;
+    this.service = webSocketService;
   }
 
   ngOnInit() {
   }
 
   connect() {
-    this.model.outputs = [];
-    this.webConnection = this.webSocketService.connect(this.model.url);
-    this.subscription =
-      this.webConnection.subscribe(s => {
-        /* success */
-        // console.log(s);
-        this.model.outputs.push(s.data);
-      }, () => {
-      }, () => {
-      });    
+    if (!this.connection) {
+      this.model.outputs = [];
+      this.connection = this.service.connect(this.model.url);
+      this.subscription =
+        this.connection.subscribe(s => {
+          /* success */
+          // console.log(s);
+          this.model.outputs.push(s.data);
+        }, () => {
+        }, () => {
+        });    
+    }
   }
 
   disconnect() {
-    if(this.webConnection) {
-      this.webConnection.unsubscribe();
-      this.webConnection = null;
+    if (this.connection) {
+      // this.connection.unsubscribe();
+      this.subscription.unsubscribe();
       this.subscription = null;
+      this.connection = null;
     }
   }
 
   send() {
-    this.webConnection.next(this.model.input);
-    this.model.input = '';
+    if (this.connection) {
+      this.connection.next(this.model.input);
+      this.model.input = '';
+    }
   }
 
 }

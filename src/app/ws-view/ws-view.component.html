@@ -2,10 +2,10 @@
   <fieldset>
     <legend class="doc">
 
-      <div *ngIf="webConnection">
+      <div *ngIf="connection">
           Connected to {{model.url}}
       </div>
-      <div *ngIf="!webConnection">
+      <div *ngIf="!connection">
           Disconnected
       </div>
   
@@ -14,18 +14,18 @@
     <div class="row responsive-label"><div class="col-sm-12 col-md-3"><label for="sf1-select" class="doc">Url</label></div>
       <div class="col-sm-12 col-md">
 
-        <select id="sf1-select" style="width:85%;" class="doc" required [(ngModel)]="model.url" name="url">
+        <select id="sf1-select" style="width:85%;" class="doc" required [(ngModel)]="model.url" name="url" [disabled]="connection">
           <option class="doc" *ngFor="let url of urls" [value]="url">{{url}}</option>
         </select>
 
         <div>
-          <button [disabled]="!model.url || webConnection" (click)="connect()">Connect</button>
-          <button *ngIf="webConnection" (click)="disconnect()">Disconnect</button>
+          <button [disabled]="!model.url || connection" (click)="connect()">Connect</button>
+          <button *ngIf="connection" (click)="disconnect()">Disconnect</button>
         </div>
       </div>
     </div>
 
-    <div *ngIf="webConnection">
+    <div *ngIf="connection">
 
       <div class="row responsive-label">
         <div class="col-sm-12 col-md-3">
