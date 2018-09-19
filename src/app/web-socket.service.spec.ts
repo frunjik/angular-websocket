@@ -40,8 +40,8 @@ describe('WebSocketService', () => {
   });
 
   describe('subject.next()', () => {
-    it('should send the message on the websocket.send', () => {
-      const message = {key: 'hello'};
+    it('should send the message (string) on the websocket.send', () => {
+      const message = JSON.stringify({key: 'hello'});
 
       wsSubject.next(message);
 
@@ -50,7 +50,7 @@ describe('WebSocketService', () => {
       socketMock.readyState = WebSocket.OPEN;
       wsSubject.next(message);
 
-      expect(socketMock.send.calls.argsFor(0)).toEqual(['{"key":"hello"}']);
+      expect(socketMock.send.calls.argsFor(0)).toEqual([message]);
     });
   });
 
