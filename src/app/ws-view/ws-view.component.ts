@@ -20,12 +20,13 @@ export class WsViewComponent implements OnInit {
   model = {
     url: '',
     input: '',
+    errors: [],
     outputs: [],
   };
 
   constructor(
     webSocketService: WebSocketService
-  ) { 
+  ) {
     this.service = webSocketService;
   }
 
@@ -39,11 +40,21 @@ export class WsViewComponent implements OnInit {
       this.subscription =
         this.connection.subscribe(s => {
           /* success */
-          // console.log(s);
-          this.model.outputs.push(s.data);
+          console.log(s);
+
+          // this.model.outputs.push(s.data);
+          const model = this.model;
+          const reader = new FileReader();
+          reader.onload = function() {
+            model.outputs.push(reader.result);
+          };
+          reader.readAsText(s.data);
+
+        }, (e) => {
+          console.log(e);
+          this.model.errors.push(e);
         }, () => {
-        }, () => {
-        });    
+        });
     }
   }
 
