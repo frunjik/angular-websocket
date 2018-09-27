@@ -42,13 +42,16 @@ export class WsViewComponent implements OnInit {
           /* success */
           console.log(s);
 
-          // this.model.outputs.push(s.data);
-          const model = this.model;
-          const reader = new FileReader();
-          reader.onload = function() {
-            model.outputs.push(reader.result);
-          };
-          reader.readAsText(s.data);
+          this.model.outputs.push(s.data);
+          // const model = this.model;
+          // const reader = new FileReader();
+          // reader.onload = function() {
+          //   model.outputs.push(reader.result);
+          // };
+          // reader.readAsText(s.data);
+
+
+
 
         }, (e) => {
           console.log(e);
